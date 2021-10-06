@@ -1,12 +1,15 @@
-const express = require('express');
-const path = require('path');
+var http = require('http');
+var fs = require('fs');
 
-const app = express();
-const port = process.env.PORT || 8081;
+const PORT=8080; 
 
-// sendFile will go here
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, '/index.html'));
+fs.readFile('./index.html', function (err, html) {
+
+    if (err) throw err;    
+
+    http.createServer(function(request, response) {  
+        response.writeHeader(200, {"Content-Type": "text/html"});  
+        response.write(html);  
+        response.end();  
+    }).listen(PORT);
 });
-
-app.listen(port);
